@@ -1,7 +1,6 @@
 package org.example.demo2.entities;
 
 import jakarta.persistence.*;
-import org.example.demo2.controller.TipoIdentificacion;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,19 +23,12 @@ public class Cliente implements Serializable {
     private String email;
     @OneToMany(mappedBy = "client",cascade = CascadeType.REMOVE)
     private List<Factura> factures;
-    @OneToOne
-    private TipoIdentificacion tipoIdentificacion;
+    @OneToOne(mappedBy = "cliente")
+    @JoinColumn(name = "id_type")
+    private TipoIdentificacion numIdentificacion;
 
     public Cliente() {
         factures= new ArrayList<>();
-    }
-
-    public Cliente(Integer id, String name, String lastName, int age, String gender) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
     }
 
     public Integer getId() {
@@ -85,5 +77,13 @@ public class Cliente implements Serializable {
 
     public void setFactures(List<Factura> factures) {
         this.factures = factures;
+    }
+
+    public TipoIdentificacion getNumIdentificacion() {
+        return numIdentificacion;
+    }
+
+    public void setNumIdentificacion(TipoIdentificacion numIdentificacion) {
+        this.numIdentificacion = numIdentificacion;
     }
 }

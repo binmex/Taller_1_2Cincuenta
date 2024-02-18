@@ -33,7 +33,7 @@ public class FactureController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findAll(@PathVariable Integer id){
+    public ResponseEntity<Object> findById(@PathVariable Integer id){
         try {
             return ResponseHandler.generateResponse("Success",HttpStatus.OK,factureServices.findById(id));
         }catch (Exception e){
@@ -41,10 +41,10 @@ public class FactureController {
         }
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Object> saveFacture(@PathVariable Integer id,@RequestBody Factura factura){
+    @PostMapping("/{idCliente}")
+    public ResponseEntity<Object> saveFacture(@PathVariable Integer idCliente,@RequestBody Factura factura){
         try {
-            Cliente cliente = clientServices.findById(id);
+            Cliente cliente = clientServices.findById(idCliente);
             if (cliente != null){
                 Factura result = factureServices.save(factura,cliente);
                 return ResponseHandler.generateResponse("Success Author",HttpStatus.CREATED,factura);

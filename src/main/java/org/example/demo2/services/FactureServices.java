@@ -31,9 +31,8 @@ public class FactureServices {
     public boolean updateFacture(Integer id,Factura facture){
         Factura findFactura = findById(id);
         if (findFactura != null){
-            findFactura.setAmount(facture.getAmount());
+            findFactura.setDate_of_issuance(facture.getDate_of_issuance());
             findFactura.setState(facture.getState());
-            findFactura.setAmount(facture.getAmount());
             factureRepository.save(findFactura);
             return true;
         }else {

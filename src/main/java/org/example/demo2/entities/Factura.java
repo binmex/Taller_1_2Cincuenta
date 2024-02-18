@@ -15,14 +15,20 @@ public class Factura implements Serializable {
     private Integer idFactura;
     @Column(name = "dateOfIssuance",nullable = false,length = 20)
     private LocalDate date_of_issuance;
-    @Column(name = "amount",nullable = false,length = 10)
-    private float amount;
     @Column(name = "state",nullable = false,length = 20)
     private String state;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false,foreignKey = @ForeignKey(name = "fk_facture_to_client"))
     @JsonIgnore
     private Cliente client;
+    @ManyToMany
+    @JoinTable(
+            name = "factura_producto",
+            joinColumns = @JoinColumn(name = "idFactura"),
+            inverseJoinColumns = @JoinColumn(name = "idProducto")
+    )
+    //@JsonIgnore
+    private List<Producto> productos;
 
     public Factura() {
     }
@@ -43,14 +49,6 @@ public class Factura implements Serializable {
         this.date_of_issuance = date_of_issuance;
     }
 
-    public float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
     public String getState() {
         return state;
     }
@@ -67,5 +65,11 @@ public class Factura implements Serializable {
         this.client = client;
     }
 
+    public List<Producto> getProductos() {
+        return productos;
+    }
 
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 }
