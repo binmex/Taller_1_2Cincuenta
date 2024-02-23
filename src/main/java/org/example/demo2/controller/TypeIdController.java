@@ -31,7 +31,7 @@ public class TypeIdController {
             List<TipoIdentificacion> result = typeIdService.findAll();
             return ResponseHandler.generateResponse("Success", HttpStatus.OK,result);
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 
@@ -50,7 +50,7 @@ public class TypeIdController {
             Cliente cliente = clientServices.findById(idCliente);
             if (cliente != null){
                 TipoIdentificacion result = typeIdService.save(identificacion,cliente);
-                return ResponseHandler.generateResponse("Success Author",HttpStatus.CREATED,identificacion);
+                return ResponseHandler.generateResponse("Success",HttpStatus.CREATED,identificacion);
             }
             return ResponseHandler.generateResponse("No found Client",HttpStatus.NOT_FOUND,null);
         }catch (Exception e){

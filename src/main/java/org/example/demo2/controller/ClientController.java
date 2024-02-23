@@ -40,7 +40,13 @@ public class ClientController {
     @PostMapping("/save")
     public ResponseEntity<Object> saveClient(@RequestBody Cliente cliente){
         try {
-            return ResponseHandler.generateResponse("Succes",HttpStatus.OK,clientServices.saveClient(cliente));
+            boolean email = clientServices.validateEmail(cliente.getEmail());
+            if (email && cliente.getAge() > 0){
+                return ResponseHandler.generateResponse("Succes",HttpStatus.OK,clientServices.saveClient(cliente));
+            }else {
+                return ResponseHandler.generateResponse("Error",HttpStatus.NOT_ACCEPTABLE,"Ingrese un correo valido (el correo no puede tener ñ) y verifique que la edad sea mayor a cero");
+            }
+
         }catch (Exception e){
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR,null);
         }
@@ -74,7 +80,7 @@ public class ClientController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Object> findByAge(@PathVariable String name){
+    public ResponseEntity<Object> findByName(@PathVariable String name){
         try {
             return ResponseHandler.generateResponse("Succes",HttpStatus.OK,clientServices.findByName(name));
         }catch (Exception e){
@@ -90,18 +96,4 @@ public class ClientController {
             return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR,e);
         }
     }
-
-    /*@GetMapping("/facture/{id}")
-    public ResponseEntity<Object> getFacture(@PathVariable Integer id){
-        try {
-            Cliente cliente = clientServices.findById(id);
-            if (cliente != null){
-                List<Factura> result = clientServices.getFacture(cliente);
-                return ResponseHandler.generateResponse("Success Author",HttpStatus.CREATED,result);
-            }
-            return ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND,null);
-        }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
-        }
-    }*/
 }

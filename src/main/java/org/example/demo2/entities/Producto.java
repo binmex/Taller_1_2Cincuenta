@@ -20,7 +20,7 @@ public class Producto implements Serializable {
     @Column(name = "precio")
     private float precio;
 
-    @ManyToMany(mappedBy = "productos")
+    @ManyToMany(mappedBy = "productos",cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Factura> facturas;
 

@@ -23,7 +23,7 @@ public class ProductController {
             List<Producto> result = productoService.findAll();
             return ResponseHandler.generateResponse("Success", HttpStatus.OK,result);
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -32,19 +32,20 @@ public class ProductController {
         try {
             return ResponseHandler.generateResponse("Success",HttpStatus.OK,productoService.findById(id));
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 
     @PostMapping("/")
     public ResponseEntity<Object> saveProduct(@RequestBody Producto producto){
         try {
-            //Factura factura = factureServices.findById(id);
-            //if (factura != null){
-                Producto result = productoService.save(producto);
-                return ResponseHandler.generateResponse("Success Author",HttpStatus.CREATED,producto);
-            //}
-            //return ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND,null);
+                if (producto.getPrecio() > 0){
+                    Producto result = productoService.save(producto);
+                    return ResponseHandler.generateResponse("Success",HttpStatus.CREATED,result);
+                }else {
+                    return ResponseHandler.generateResponse("Success",HttpStatus.CREATED,"El precio debe ser mayor a 0");
+                }
+
         }catch (Exception e){
             return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
@@ -65,6 +66,15 @@ public class ProductController {
             return ResponseHandler.generateResponse("Succes",HttpStatus.OK,productoService.removeFacture(id));
         }catch (Exception e){
             return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
+    }
+
+    @GetMapping("/name/{nameProduct}")
+    public ResponseEntity<Object> findByNameProduct(@PathVariable String nameProduct){
+        try {
+            return ResponseHandler.generateResponse("Succes",HttpStatus.OK,productoService.findByName(nameProduct));
+        }catch (Exception e){
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR,e);
         }
     }
 }

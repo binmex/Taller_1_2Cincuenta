@@ -39,14 +39,9 @@ public class FactureServices {
             return false;
         }
     }
-
     public boolean removeFacture(Integer id){
         factureRepository.delete(findById(id));
         return true;
-    }
-
-    public Object factureAllInformation(){
-        return factureRepository.findFactuteAllInformation();
     }
 
 }

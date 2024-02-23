@@ -22,13 +22,13 @@ public class FactureController {
     @Autowired
     private ClientServices clientServices;
 
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<Object> findAll(){
         try {
             List<Factura> result = factureServices.findAll();
             return ResponseHandler.generateResponse("Success",HttpStatus.OK,result);
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 
@@ -37,7 +37,7 @@ public class FactureController {
         try {
             return ResponseHandler.generateResponse("Success",HttpStatus.OK,factureServices.findById(id));
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 
@@ -47,11 +47,11 @@ public class FactureController {
             Cliente cliente = clientServices.findById(idCliente);
             if (cliente != null){
                 Factura result = factureServices.save(factura,cliente);
-                return ResponseHandler.generateResponse("Success Author",HttpStatus.CREATED,factura);
+                return ResponseHandler.generateResponse("Success",HttpStatus.CREATED,factura);
             }
-            return ResponseHandler.generateResponse("Success Author",HttpStatus.NOT_FOUND,null);
+            return ResponseHandler.generateResponse("Error",HttpStatus.NOT_FOUND,"no se encuentra el cliente");
         }catch (Exception e){
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null );
+            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage() );
         }
     }
 
@@ -70,15 +70,6 @@ public class FactureController {
             return ResponseHandler.generateResponse("Succes",HttpStatus.OK,factureServices.removeFacture(id));
         }catch (Exception e){
             return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-        }
-    }
-
-    @GetMapping("/allInformation/")
-    public ResponseEntity<Object> findFactureAllInformation(){
-        try {
-            return ResponseHandler.generateResponse("Succes",HttpStatus.OK,factureServices.factureAllInformation());
-        }catch (Exception e){
-            return ResponseHandler.generateResponse("Error", HttpStatus.INTERNAL_SERVER_ERROR,e);
         }
     }
 

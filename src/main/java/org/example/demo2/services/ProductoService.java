@@ -1,5 +1,6 @@
 package org.example.demo2.services;
 
+import org.example.demo2.entities.Cliente;
 import org.example.demo2.entities.Factura;
 import org.example.demo2.entities.Producto;
 import org.example.demo2.repositories.ProductoRepository;
@@ -42,5 +43,9 @@ public class ProductoService {
     public boolean removeFacture(Integer id){
         productoRepository.delete(findById(id));
         return true;
+    }
+
+    public List<Producto> findByName(String name){
+        return productoRepository.findByName(name);
     }
 }

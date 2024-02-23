@@ -23,7 +23,7 @@ public class Cliente implements Serializable {
     private String email;
     @OneToMany(mappedBy = "client",cascade = CascadeType.REMOVE)
     private List<Factura> factures;
-    @OneToOne(mappedBy = "cliente")
+    @OneToOne(mappedBy = "cliente",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type")
     private TipoIdentificacion numIdentificacion;
 
